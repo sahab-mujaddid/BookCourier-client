@@ -23,7 +23,7 @@ const Navbar =()=>{
       {
       user?<> <li><Link to={"/"}>Home</Link></li>
        <li><Link to={"/Books"}>Books</Link></li>
-         <li><Link to={"/Deshboard"}>Deshbord</Link></li>
+         <li><Link to={"/Myorder"}>MyOrder</Link></li>
           
         </>
         :""
@@ -45,7 +45,7 @@ const Navbar =()=>{
               </label>
               <div className="absolute  top-full right-0 mt-2 hidden group-hover:flex flex-col bg-white shadow-lg rounded-md p-2 min-w-[100px] z-10 text-left">
                 <Link to={'/Myorder'}>MyOrder</Link>
-                <Link to={'/Deshboard'}>Deshboard</Link>
+               
       <button 
         onClick={handlelogout}
         className="text-sm text-red-500 hover:bg-red-50 p-2 rounded text-right"
