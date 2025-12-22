@@ -11,18 +11,22 @@ const Footer =()=>{
     
   </nav>
   <nav>
-    <h6 className="footer-title">Company</h6>
+    <h6 className="footer-title">Support</h6>
     <a className="link link-hover">About us</a>
     <a className="link link-hover">Contact</a>
-    <a className="link link-hover">Jobs</a>
-    <a className="link link-hover">Press kit</a>
+    
   </nav>
   <nav>
-    <h6 className="footer-title">Social</h6>
+    <h6 className="footer-title">Connect</h6>
     <div className="grid grid-flow-col gap-4">
-      <a>
-       <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/twitterx--v1.png" alt="twitterx--v1"/>
-      </a>
+     <a href="https://x.com/home?lang=en" target="_blank" rel="noopener noreferrer">
+  <img
+    width="50"
+    height="50"
+    src="https://img.icons8.com/ios-filled/50/twitterx--v1.png"
+    alt="twitterx--v1"
+  />
+</a>
      
     </div>
   </nav>
