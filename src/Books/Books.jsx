@@ -5,12 +5,27 @@ import { useLoaderData } from "react-router";
 const Books = () => {
   const Data = useLoaderData();
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortOption, setSortOption] = useState("Newest Arrivals"); // ✅ track sort
 
-  
+  // Filter books based on search term
   const filteredBooks = Data.filter((book) =>
     book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     book.author.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Sort books based on selected option
+  const sortedBooks = [...filteredBooks].sort((a, b) => {
+    if (sortOption === "Title") {
+      return a.title.localeCompare(b.title);
+    }
+    if (sortOption === "Author") {
+      return a.author.localeCompare(b.author);
+    }
+    if (sortOption === "Newest Arrivals") {
+      return new Date(b.timestamp) - new Date(a.timestamp); // assumes timestamp exists
+    }
+    return 0;
+  });
 
   return (
     <div>
@@ -31,19 +46,23 @@ const Books = () => {
             </label>
           </div>
           <div>
-            <select className="select select-bordered w-full sm:w-48">
-              <option>Sort by: Newest Arrivals</option>
-              <option>Sort by: Title</option>
-              <option>Sort by: Author</option>
+            <select
+              className="select select-bordered w-full sm:w-48"
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)} // ✅ update sort
+            >
+              <option>Newest Arrivals</option>
+              <option>Title</option>
+              <option>Author</option>
             </select>
           </div>
         </div>
       </div>
 
-      
+      {/* Books Grid */}
       <div className="grid grid-cols-4 gap-4 p-6">
-        {filteredBooks.length > 0 ? (
-          filteredBooks.map((singledata) => (
+        {sortedBooks.length > 0 ? (
+          sortedBooks.map((singledata) => (
             <Link key={singledata._id} to={`/Bookdetails/${singledata._id?.toString()}`}>
               <div className="card bg-base-100 shadow-sm mt-10">
                 <figure>
@@ -69,7 +88,7 @@ const Books = () => {
         )}
       </div>
 
-      
+      {/* Pagination */}
       <div className="flex justify-center items-center space-x-2 mt-8">
         <button className="btn btn-sm btn-outline">Prev</button>
         <button className="btn btn-sm btn-primary">1</button>
