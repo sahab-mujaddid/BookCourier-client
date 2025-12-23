@@ -64,7 +64,7 @@ const Home =()=>{
       <div className="flex gap-5 ">
         <div className="card bg-base-100  shadow-sm  w-96">
   <div className="card-body">
-    <h3 className="text-center">Same Day Delivery</h3>
+    <h3 className="text-center font-bold text-blue-400">Same Day Delivery</h3>
      <p className="text-sm">
       Request before 2 PM and get your books delivered the same evening. We value your reading time.
     </p>
@@ -77,16 +77,16 @@ const Home =()=>{
 </div>
 <div className="card bg-base-100  shadow-sm  w-96">
   <div className="card-body">
-    <h3 className="text-center">Secure Handling</h3>
+    <h3 className="text-center font-bold text-blue-400">Secure Handling</h3>
     <p> Our couriers are trained to handle books with care. Weather-proof packaging ensures pristine condition.</p>
     <div className="card-actions justify-end">
       
     </div>
   </div>
 </div>
-<div className="card bg-base-100  shadow-sm  w-96">
+<div className="card  bg-base-100  shadow-sm  w-96">
   <div className="card-body ">
-    <h2 className="text-center">Real-time Tracking</h2>
+    <h2 className="text-center font-bold text-blue-400">Real-time Tracking</h2>
     <p>Track your book’s journey from the library shelf to your front door with our live GPS integration.
 </p>
     <div className="card-actions justify-end">
