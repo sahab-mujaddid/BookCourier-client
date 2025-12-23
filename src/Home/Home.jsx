@@ -55,7 +55,7 @@ const Home =()=>{
     
     <div className="mt-8 ">
 <div>
-      <h1 className="text-center">Why Choose Book Courier</h1>
+      <h1 className="text-center font-bold text-blue-400">Why Choose Book Courier</h1>
       <p className="text-center mb-8">
   We bridge the gap between you and knowledge, making library access as easy as ordering pizza.
 </p>
