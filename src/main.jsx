@@ -20,6 +20,7 @@ import Registration from './pages/Registration.jsx';
 import Bookdetails from './Bookdetails/Bookdetails.jsx';
 import Myorder from './Myorder/Myorder.jsx';
 import BuyForm from './BuyForm/BuyForm.jsx';
+import ContactPage from './ContactPage/ContactPage.jsx';
 
 
 const router = createBrowserRouter([
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
     {
       path:'/Deshboard',
       element:<Deshboard></Deshboard>,
+    },
+    {
+      path:'/ContactPage',
+      element:<ContactPage></ContactPage>,
     },
     {
       path:'/Myorder',

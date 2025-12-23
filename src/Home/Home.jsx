@@ -37,11 +37,9 @@ const Home =()=>{
   </figure>
   <div className="card-body">
     <h2 className="card-title">
-      {singledata.title}
-      
+      {singledata.title} 
     </h2>
     <h1>{singledata.author}</h1>
-    <h1 className="font-bold">Price:</h1>
      <h1><Link to={`/Bookdetails/${singledata?._id?.toString()}`} className="btn text-white bg-blue-400">View Details</Link> </h1>
   </div>
   

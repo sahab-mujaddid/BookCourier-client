@@ -13,7 +13,7 @@ const Footer =()=>{
   <nav>
     <h6 className="footer-title">Support</h6>
     <a className="link link-hover">About us</a>
-    <a className="link link-hover">Contact</a>
+   <Link to={'/ContactPage'}>Contact Us</Link>
     
   </nav>
   <nav>
