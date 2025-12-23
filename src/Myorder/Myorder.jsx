@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 
 const MyOrder = () => {
   const [order, setOrder] = useState(null);
-
+  const [btnText, setBtnText] = useState("Cancel");
+  const [payText, setpayText] = useState("Pay Now");
+  const [penText, setpenText] = useState("Pending");
   useEffect(() => {
    
     const storedOrder = localStorage.getItem("bookCourierOrder");
@@ -10,6 +12,13 @@ const MyOrder = () => {
       setOrder(JSON.parse(storedOrder));
     }
   }, []);
+
+  const handleCancel = () => {
+    console.log("Cancel button clicked!");
+    setBtnText("Canceled");
+    setpayText("");
+    setpenText("Canceled");
+  };
 
   return (
     
@@ -48,12 +57,13 @@ const MyOrder = () => {
                 </td>
                 <td>{new Date(order.timestamp).toLocaleString()}</td>
                 <td>
-                  <span className="badge badge-warning">Pending</span>
+                  <span className="badge badge-warning">{penText}</span>
                 </td>
                 <td>$5.00</td>
                 <td className="flex gap-2">
-                  <button className="btn btn-sm btn-success">Pay Now</button>
-                  <button className="btn btn-sm btn-error">Cancel</button>
+                  <button className="btn btn-sm btn-success">{payText}</button>
+                  <button onClick={handleCancel}
+                  className="btn cn btn-sm btn-error"> {btnText}</button>
                 </td>
               </tr>
             ) : (
