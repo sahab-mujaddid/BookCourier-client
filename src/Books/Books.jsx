@@ -5,27 +5,39 @@ import { useLoaderData } from "react-router";
 const Books = () => {
   const Data = useLoaderData();
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOption, setSortOption] = useState("Newest Arrivals"); // ✅ track sort
+  const [sortOption, setSortOption] = useState("Newest Arrivals");
+  const [currentPage, setCurrentPage] = useState(1); 
 
-  // Filter books based on search term
-  const filteredBooks = Data.filter((book) =>
-    book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    book.author.toLowerCase().includes(searchTerm.toLowerCase())
+  const booksPerPage = 8;
+
+  
+  const filteredBooks = Data.filter(
+    (book) =>
+      book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      book.author.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Sort books based on selected option
+  
   const sortedBooks = [...filteredBooks].sort((a, b) => {
-    if (sortOption === "Title") {
-      return a.title.localeCompare(b.title);
-    }
-    if (sortOption === "Author") {
-      return a.author.localeCompare(b.author);
-    }
-    if (sortOption === "Newest Arrivals") {
-      return new Date(b.timestamp) - new Date(a.timestamp); // assumes timestamp exists
-    }
+    if (sortOption === "Title") return a.title.localeCompare(b.title);
+    if (sortOption === "Author") return a.author.localeCompare(b.author);
+    if (sortOption === "Newest Arrivals")
+      return new Date(b.timestamp) - new Date(a.timestamp);
     return 0;
   });
+
+  
+  const totalPages = Math.ceil(sortedBooks.length / booksPerPage);
+  const startIndex = (currentPage - 1) * booksPerPage;
+  const currentBooks = sortedBooks.slice(startIndex, startIndex + booksPerPage);
+
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
 
   return (
     <div>
@@ -41,7 +53,7 @@ const Books = () => {
                 required
                 placeholder="Search"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)} // ✅ update state
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </label>
           </div>
@@ -49,7 +61,7 @@ const Books = () => {
             <select
               className="select select-bordered w-full sm:w-48"
               value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)} // ✅ update sort
+              onChange={(e) => setSortOption(e.target.value)}
             >
               <option>Newest Arrivals</option>
               <option>Title</option>
@@ -59,14 +71,18 @@ const Books = () => {
         </div>
       </div>
 
-      {/* Books Grid */}
+      
       <div className="grid grid-cols-4 gap-4 p-6">
-        {sortedBooks.length > 0 ? (
-          sortedBooks.map((singledata) => (
+        {currentBooks.length > 0 ? (
+          currentBooks.map((singledata) => (
             <Link key={singledata._id} to={`/Bookdetails/${singledata._id?.toString()}`}>
               <div className="card bg-base-100 shadow-sm mt-10">
                 <figure>
-                  <img src={singledata.image_url} className="w-full h-96" alt={singledata.title} />
+                  <img
+                    src={singledata.image_url}
+                    className="w-full h-96"
+                    alt={singledata.title}
+                  />
                 </figure>
                 <div className="card-body">
                   <h2 className="card-title">{singledata.title}</h2>
@@ -88,15 +104,36 @@ const Books = () => {
         )}
       </div>
 
-      {/* Pagination */}
+      
       <div className="flex justify-center items-center space-x-2 mt-8">
-        <button className="btn btn-sm btn-outline">Prev</button>
-        <button className="btn btn-sm btn-primary">1</button>
-        <button className="btn btn-sm btn-outline">2</button>
-        <button className="btn btn-sm btn-outline">3</button>
-        <span className="px-2 text-gray-500">...</span>
-        <button className="btn btn-sm btn-outline">8</button>
-        <button className="btn btn-sm btn-outline">Next</button>
+        <button
+          onClick={handlePrev}
+          disabled={currentPage === 1}
+          className="btn btn-sm btn-outline"
+        >
+          Prev
+        </button>
+
+        
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i + 1}
+            onClick={() => setCurrentPage(i + 1)}
+            className={`btn btn-sm ${
+              currentPage === i + 1 ? "btn-primary" : "btn-outline"
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
+
+        <button
+          onClick={handleNext}
+          disabled={currentPage === totalPages}
+          className="btn btn-sm btn-outline"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
