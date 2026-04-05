@@ -1,83 +1,122 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { AuthContex } from "../Provider/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
-const MyOrder = () => {
-  const [order, setOrder] = useState(null);
-  const [btnText, setBtnText] = useState("Cancel");
-  const [payText, setpayText] = useState("Pay Now");
-  const [penText, setpenText] = useState("Pending");
+const Myorder = () => {
+  const { user } = useContext(AuthContex);
+  const [orders, setOrders] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
-   
-    const storedOrder = localStorage.getItem("bookCourierOrder");
-    if (storedOrder) {
-      setOrder(JSON.parse(storedOrder));
-    }
-  }, []);
+    const fetchOrders = async () => {
+      if (!user?.email) return;
+      try {
+        const res = await fetch(`http://localhost:3000/orders?email=${user.email}`);
+        const data = await res.json();
+        setOrders(data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+    fetchOrders();
+  }, [user?.email]);
 
-  const handleCancel = () => {
-    console.log("Cancel button clicked!");
-    setBtnText("Canceled");
-    setpayText("");
-    setpenText("Canceled");
+  // ✅ Cancel order
+  const handleCancel = async (id) => {
+    try {
+      await fetch(`http://localhost:3000/orders/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "cancelled" }),
+      });
+      setOrders((prev) =>
+        prev.map((o) => (o._id === id ? { ...o, status: "cancelled" } : o))
+      );
+    } catch (error) {
+      console.error("Error cancelling order:", error);
+    }
+  };
+
+  // ✅ Pay order
+  const handlePay = async (id) => {
+    // Redirect to payment page (simulate)
+    navigate(`/payment/${id}`);
+    // After payment success, you’d call PATCH:
+    // await fetch(`http://localhost:3000/orders/${id}`, {
+    //   method: "PATCH",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ status: "paid", paid: true }),
+    // });
   };
 
   return (
-    
     <div className="p-6">
-      
-      <h2 className="text-2xl font-bold mb-2">My Orders</h2>
-      <p className="text-sm text-gray-500 mb-4">
-        Manage your book deliveries, track shipments, and handle payments.
-      </p>
-
-      <div className="overflow-x-auto">
-        <table className="table table-zebra w-full">
-          <thead>
-            <tr>
-              <th>Customer Details</th>
-              <th>Order Date</th>
-              <th>Status</th>
-              <th>Total Cost</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {order ? (
+      <h2 className="text-2xl font-bold mb-6">My Orders</h2>
+      {orders.length === 0 ? (
+        <p>No orders found for {user?.email}</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="table w-full bg-white shadow-md rounded-lg">
+            <thead className="bg-blue-100">
               <tr>
-                <td>
-                  <div>
-                    <div className="font-semibold">{order.name}</div>
-                    <div className="text-sm text-gray-500">{order.email}</div>
-                    <div className="text-xs text-gray-400">
-                      Phone: {order.phone}
-                    </div>
-                    <div className="text-xs text-gray-400">
-                      Address: {order.address}
-                    </div>
-                  </div>
-                </td>
-                <td>{new Date(order.timestamp).toLocaleString()}</td>
-                <td>
-                  <span className="badge badge-warning">{penText}</span>
-                </td>
-                <td>$5.00</td>
-                <td className="flex gap-2">
-                  <button className="btn btn-sm btn-success">{payText}</button>
-                  <button onClick={handleCancel}
-                  className="btn cn btn-sm btn-error"> {btnText}</button>
-                </td>
+                <th>Book Details</th>
+                <th>Order Date</th>
+                <th>Status</th>
+                <th>Total Cost</th>
+                <th>Actions</th>
               </tr>
-            ) : (
-              <tr>
-                <td colSpan="5" className="text-center text-gray-500">
-                  No orders found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order._id} className="hover:bg-blue-50">
+                  <td>
+                    <div>
+                      <p className="font-semibold">{order.name}</p>
+                      <p className="text-sm text-gray-500">Ref: #{order._id}</p>
+                    </div>
+                  </td>
+                  <td>{new Date(order.timestamp).toLocaleString()}</td>
+                  <td>
+                    {order.status === "pending" && (
+                      <span className="badge badge-warning">Pending</span>
+                    )}
+                    {order.status === "paid" && (
+                      <span className="badge badge-success">Paid</span>
+                    )}
+                    {order.status === "cancelled" && (
+                      <span className="badge badge-error">Cancelled</span>
+                    )}
+                  </td>
+                  <td>${order.totalCost || "0.00"}</td>
+                  <td className="space-x-2">
+                    {order.status === "pending" && (
+                      <>
+                        <button
+                          onClick={() => handlePay(order._id)}
+                          className="btn btn-sm btn-primary"
+                        >
+                          Pay Now
+                        </button>
+                        <button
+                          onClick={() => handleCancel(order._id)}
+                          className="btn btn-sm btn-error"
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    )}
+                    {order.status !== "pending" && (
+                      <span className="text-gray-400">No actions</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
 
-export default MyOrder;
+export default Myorder;

@@ -1,32 +1,41 @@
 import React from "react";
-import { Link, Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";   // ✅ fixed import
+import { toast } from "react-toastify";
 
 const BuyForm = () => {
-    const navigate = useNavigate();
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
 
-    const name = form.name.value;
-    const email = form.email.value;
-    const phone = form.phone.value;
-    const address = form.address.value;
-
     const orderData = {
-      name,
-      email,
-      phone,
-      address,
+      name: form.name.value,
+      email: form.email.value,
+      phone: form.phone.value,
+      address: form.address.value,
       timestamp: new Date().toISOString(),
     };
 
-    
-    localStorage.setItem("bookCourierOrder", JSON.stringify(orderData));
+    try {
+      // ✅ Send order to backend instead of localStorage
+      const res = await fetch("http://localhost:3000/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      });
 
-   
-    form.reset();
-     navigate("/Myorder");
-
+      if (res.ok) {
+        toast.success("Order confirmed! Check dashboard.");
+        form.reset();
+        navigate("/");   // ✅ redirect after success
+      } else {
+        toast.error("Failed to save order.");
+      }
+    } catch (error) {
+      console.error("Error submitting order:", error);
+      toast.error("Error submitting order.");
+    }
   };
 
   return (
@@ -47,7 +56,7 @@ const BuyForm = () => {
               <label className="label">Address</label>
               <input name="address" type="text" className="input" placeholder="Address" required />
 
-              <button type="submit"  className="btn bg-blue-400 mt-4 text-white">
+              <button type="submit" className="btn bg-blue-400 mt-4 text-white">
                 Order Now
               </button>
             </fieldset>

@@ -16,18 +16,17 @@ const Navbar =()=>{
     return(
        <div className="navbar bg-base-100 shadow-sm">
   <div className="flex-1">
-    <a className="btn btn-ghost text-xl"><img className="w-[60px] h-[60px]" src={logo} alt="" /> BookCourier</a>
+    <Link to='/' className="btn btn-ghost text-xl"><img className="w-[60px] h-[60px]" src={logo} alt="" /> BookCourier</Link>
   </div>
   <div className="flex-none">
     <ul className="menu menu-horizontal px-1">
-      {
-      user?<> <li><Link to={"/"}>Home</Link></li>
+      
+       <li><Link to={"/"}>Home</Link></li>
        <li><Link to={"/Books"}>Books</Link></li>
-         <li><Link to={"/Myorder"}>MyOrder</Link></li>
+         {/* <li><Link to={"/Myorder"}>MyOrder</Link></li> */}
+          <li><Link to={"/dashboard"}>Deshboard</Link></li>
           
-        </>
-        :""
-      } 
+        
     {
        user ? <ul><li className="relative group">
          <label
@@ -44,7 +43,7 @@ const Navbar =()=>{
                 />
               </label>
               <div className="absolute  top-full right-0 mt-2 hidden group-hover:flex flex-col bg-white shadow-lg rounded-md p-2 min-w-[100px] z-10 text-left">
-                <Link to={'/Myorder'}>MyOrder</Link>
+               
                
       <button 
         onClick={handlelogout}
