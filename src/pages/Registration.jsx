@@ -41,10 +41,10 @@ const Register = () => {
       .then((result) => {
         const user = result.user;
 
-        // ✅ Update Firebase profile first
+        // Update Firebase profile first
         updateProfile(user, { displayName: name, photoURL: photo })
           .then(() => {
-            // ✅ Save updated user to MongoDB
+            //  Save updated user to MongoDB
             const userData = {
               uid: user.uid,
               email: user.email,
@@ -59,7 +59,7 @@ const Register = () => {
               body: JSON.stringify(userData),
             }).catch((err) => console.error("Error saving user:", err));
 
-            // ✅ Update context with correct values
+            //  Update context with correct values
             setUser({ ...user, displayName: name, photoURL: photo });
 
             navigate(location?.state ? location.state : "/");
@@ -79,7 +79,7 @@ const Register = () => {
       .then((result) => {
         const user = result.user;
 
-        // ✅ Google users already have displayName & photoURL
+        // Google users already have displayName & photoURL
         const userData = {
           uid: user.uid,
           email: user.email,

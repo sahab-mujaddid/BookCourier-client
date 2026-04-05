@@ -16,30 +16,30 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Register new user (MongoDB save handled in Register component)
+  //  Register new user (MongoDB save handled in Register component)
   const createUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  // 🔹 Login existing user (no DB save here)
+  //  Login existing user (no DB save here)
   const signIn = (email, password) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  // 🔹 Update Firebase profile (optional, used in Register component)
+  //  Update Firebase profile (optional, used in Register component)
   const updateUser = (updatedData) => {
     return updateProfile(auth.currentUser, updatedData);
   };
 
-  // 🔹 Logout
+  //  Logout
   const logOut = () => {
     setLoading(true);
     return signOut(auth);
   };
 
-  // 🔹 Track auth state and fetch user record from MongoDB
+  //  Track auth state and fetch user record from MongoDB
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {

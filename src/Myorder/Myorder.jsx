@@ -21,7 +21,7 @@ const Myorder = () => {
     fetchOrders();
   }, [user?.email]);
 
-  // ✅ Cancel order
+  //  Cancel order
   const handleCancel = async (id) => {
     try {
       await fetch(`http://localhost:3000/orders/${id}`, {
@@ -37,7 +37,7 @@ const Myorder = () => {
     }
   };
 
-  // ✅ Pay order
+  //  Pay order
   const handlePay = async (id) => {
     // Redirect to payment page (simulate)
     navigate(`/payment/${id}`);

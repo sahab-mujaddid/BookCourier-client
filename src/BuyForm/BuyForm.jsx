@@ -1,24 +1,24 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";   // ✅ fixed import
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AuthContex } from "../Provider/AuthProvider"; 
 
 const BuyForm = () => {
   const navigate = useNavigate();
-
+  const { user } = useContext(AuthContex); 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
 
     const orderData = {
       name: form.name.value,
-      email: form.email.value,
+      email: user?.email || form.email.value, 
       phone: form.phone.value,
       address: form.address.value,
       timestamp: new Date().toISOString(),
     };
 
     try {
-      // ✅ Send order to backend instead of localStorage
       const res = await fetch("http://localhost:3000/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -28,7 +28,7 @@ const BuyForm = () => {
       if (res.ok) {
         toast.success("Order confirmed! Check dashboard.");
         form.reset();
-        navigate("/");   // ✅ redirect after success
+        navigate("/");
       } else {
         toast.error("Failed to save order.");
       }
@@ -48,7 +48,15 @@ const BuyForm = () => {
               <input name="name" type="text" className="input" placeholder="Name" required />
 
               <label className="label">Email</label>
-              <input name="email" type="email" className="input" placeholder="Email" required />
+              <input
+                name="email"
+                type="email"
+                className="input"
+                placeholder="Email"
+                defaultValue={user?.email || ""}
+                readOnly={!!user?.email} //  
+                required
+              />
 
               <label className="label">Phone</label>
               <input name="phone" type="text" className="input" placeholder="Phone" required />

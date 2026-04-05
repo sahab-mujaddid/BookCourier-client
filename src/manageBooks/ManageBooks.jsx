@@ -5,7 +5,7 @@ const ManageBooks = () => {
   const [books, setBooks] = useState([]);
   const navigate = useNavigate();
 
-  // 🔹 Load all books from librarianbooks collection
+  //  Load all books from librarianbooks collection
   useEffect(() => {
     fetch("http://localhost:3000/librarianbooks")
       .then((res) => res.json())
@@ -13,30 +13,30 @@ const ManageBooks = () => {
       .catch((err) => console.error("Error fetching books:", err));
   }, []);
 
-  // 🔹 Unpublish book
-  const handleUnpublish = async (id) => {
+  //  Update book status (publish/unpublish)
+  const handleStatusChange = async (id, newStatus) => {
     try {
       const res = await fetch(`http://localhost:3000/librarianbooks/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "unpublished" }),
+        body: JSON.stringify({ status: newStatus }),
       });
 
       if (res.ok) {
         setBooks((prev) =>
-          prev.map((b) => (b._id === id ? { ...b, status: "unpublished" } : b))
+          prev.map((b) => (b._id === id ? { ...b, status: newStatus } : b))
         );
-        alert("Book unpublished successfully!");
+        alert(`Book ${newStatus} successfully!`);
       } else {
-        alert("Failed to unpublish book.");
+        alert(`Failed to change status to ${newStatus}.`);
       }
     } catch (error) {
-      console.error("Error unpublishing book:", error);
-      alert("Error unpublishing book.");
+      console.error(`Error changing status:`, error);
+      alert("Error updating book status.");
     }
   };
 
-  // 🔹 Navigate to edit page
+  //  Navigate to edit page
   const handleEdit = (id) => {
     navigate(`/edit-book/${id}`);
   };
@@ -82,12 +82,20 @@ const ManageBooks = () => {
                   >
                     Edit
                   </button>
-                  {book.status === "published" && (
+
+                  {book.status === "published" ? (
                     <button
-                      onClick={() => handleUnpublish(book._id)}
+                      onClick={() => handleStatusChange(book._id, "unpublished")}
                       className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                     >
                       Unpublish
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleStatusChange(book._id, "published")}
+                      className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                    >
+                      Publish
                     </button>
                   )}
                 </td>

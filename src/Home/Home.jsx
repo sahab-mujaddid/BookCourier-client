@@ -68,6 +68,23 @@ const Home = () => {
         ))}
       </div>
 
+<section className="bg-base-200 py-16">
+  <h2 className="text-center font-bold text-blue-500 text-2xl mb-2">Our Coverage</h2>
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+    {[
+      { icon: "📚", text: "500+ Books Available" },
+      { icon: "👩‍🏫", text: "100+ Librarians" },
+      { icon: "😊", text: "10K+ Happy Members" },
+      { icon: "🚚", text: "Nationwide Delivery" },
+    ].map((item, i) => (
+      <div key={i} className="card bg-base-100 shadow-md text-center p-6">
+        <div className="text-4xl mb-2">{item.icon}</div>
+        <p className="font-semibold">{item.text}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
       {/* Why Choose Section */}
       <div className="mt-16">
         <div>
@@ -79,6 +96,7 @@ const Home = () => {
             as easy as ordering pizza.
           </p>
         </div>
+
 
         <div className="flex flex-wrap justify-center gap-6">
           <div className="card bg-base-100 shadow-sm w-80 hover:shadow-lg hover:-translate-y-1 transition duration-300">
