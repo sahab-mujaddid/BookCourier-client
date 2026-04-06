@@ -47,7 +47,7 @@ const Login = () => {
           role: "user",
         };
 
-        fetch("http://localhost:3000/users", {
+        fetch("https://book-courier-two.vercel.app/users", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(userData),

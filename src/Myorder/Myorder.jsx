@@ -11,7 +11,7 @@ const Myorder = () => {
     const fetchOrders = async () => {
       if (!user?.email) return;
       try {
-        const res = await fetch(`http://localhost:3000/orders?email=${user.email}`);
+        const res = await fetch(`https://book-courier-two.vercel.app/orders?email=${user.email}`);
         const data = await res.json();
         setOrders(data);
       } catch (error) {
@@ -21,10 +21,10 @@ const Myorder = () => {
     fetchOrders();
   }, [user?.email]);
 
-  //  Cancel order
+  // Cancel order
   const handleCancel = async (id) => {
     try {
-      await fetch(`http://localhost:3000/orders/${id}`, {
+      await fetch(`https://book-courier-two.vercel.app/orders/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "cancelled" }),
@@ -37,16 +37,9 @@ const Myorder = () => {
     }
   };
 
-  //  Pay order
+  // Pay order
   const handlePay = async (id) => {
-    // Redirect to payment page (simulate)
     navigate(`/payment/${id}`);
-    // After payment success, you’d call PATCH:
-    // await fetch(`http://localhost:3000/orders/${id}`, {
-    //   method: "PATCH",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ status: "paid", paid: true }),
-    // });
   };
 
   return (
@@ -59,10 +52,10 @@ const Myorder = () => {
           <table className="table w-full bg-white shadow-md rounded-lg">
             <thead className="bg-blue-100">
               <tr>
-                <th>Book Details</th>
+                <th>Book</th>
                 <th>Order Date</th>
                 <th>Status</th>
-                <th>Total Cost</th>
+                <th>Price</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -71,7 +64,7 @@ const Myorder = () => {
                 <tr key={order._id} className="hover:bg-blue-50">
                   <td>
                     <div>
-                      <p className="font-semibold">{order.name}</p>
+                      <p className="font-semibold">{order.bookTitle}</p>
                       <p className="text-sm text-gray-500">Ref: #{order._id}</p>
                     </div>
                   </td>
@@ -87,9 +80,9 @@ const Myorder = () => {
                       <span className="badge badge-error">Cancelled</span>
                     )}
                   </td>
-                  <td>${order.totalCost || "0.00"}</td>
+                  <td>${order.bookPrice || "0.00"}</td>
                   <td className="space-x-2">
-                    {order.status === "pending" && (
+                    {order.status === "pending" ? (
                       <>
                         <button
                           onClick={() => handlePay(order._id)}
@@ -104,8 +97,7 @@ const Myorder = () => {
                           Cancel
                         </button>
                       </>
-                    )}
-                    {order.status !== "pending" && (
+                    ) : (
                       <span className="text-gray-400">No actions</span>
                     )}
                   </td>

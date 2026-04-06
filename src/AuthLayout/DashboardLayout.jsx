@@ -102,11 +102,11 @@ const DashboardLayout = () => {
                       My Books
                     </Link>
                   </li>
-                  <li>
-                    <Link to="/dashboard/orders" className={`flex items-center gap-3 p-2 ${isActive("/dashboard/orders")}`}>
+                  {/* <li>
+                    <Link to="/dashboard/librarianorder" className={`flex items-center gap-3 p-2 ${isActive("/dashboard/librarianorder")}`}>
                       Orders
                     </Link>
-                  </li>
+                  </li> */}
                 </>
               )}
 

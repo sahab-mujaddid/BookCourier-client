@@ -10,10 +10,10 @@ const MyProfile = () => {
     e.preventDefault();
 
     try {
-      // ✅ Update Firebase profile
+      //  Update Firebase profile
       await updateUser({ displayName: name, photoURL: photo });
 
-      // ✅ Update MongoDB record
+      //  Update MongoDB record
       const userData = {
         uid: user.uid,
         email: user.email,
@@ -22,13 +22,13 @@ const MyProfile = () => {
         role: user.role || "user",
       };
 
-      await fetch(`http://localhost:3000/users/${user.email}`, {
+      await fetch(`https://book-courier-two.vercel.app/users/${user.email}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
       });
 
-      // ✅ Update context
+      //  Update context
       setUser({ ...user, displayName: name, photoURL: photo });
       alert("Profile updated successfully!");
     } catch (error) {

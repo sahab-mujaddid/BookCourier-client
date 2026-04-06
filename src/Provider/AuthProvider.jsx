@@ -44,7 +44,7 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         try {
-          const res = await fetch(`http://localhost:3000/users/${currentUser.email}`);
+          const res = await fetch(`https://book-courier-two.vercel.app/users/${currentUser.email}`);
           if (res.ok) {
             const dbUser = await res.json();
             setUser({

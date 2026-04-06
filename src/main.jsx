@@ -28,6 +28,7 @@ import AllUsers from "./allUsers/AllUsers.jsx";
 import AddBooks from "./addBooks/AddBooks.jsx";
 import MyBooks from "./myBooks/myBooks.jsx";
 import ManageBooks from "./manageBooks/ManageBooks.jsx";
+import LibrarianOrder from "./librarianOrder/LibrarianOrder.jsx";
 
 const router = createBrowserRouter([
   {
@@ -36,12 +37,12 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        loader: () => fetch("http://localhost:3000/models"),
+        loader: () => fetch("https://book-courier-two.vercel.app/models"),
         element: <Home />,
       },
       {
         path: "/Books",
-        loader: () => fetch("http://localhost:3000/models"),
+        loader: () => fetch("https://book-courier-two.vercel.app/models"),
         element: (
           <PrivateRoute>
             <Books />
@@ -54,11 +55,13 @@ const router = createBrowserRouter([
       },
       {
         path: "/Bookdetails/:_id",
-        loader: () => fetch("http://localhost:3000/models"),
+        loader: () => fetch("https://book-courier-two.vercel.app/models"),
         element: <Bookdetails />,
       },
       {
-        path: "/BuyForm",
+        path: "/BuyForm/:id",
+        loader: () => fetch("https://book-courier-two.vercel.app/models"),
+        element: <Bookdetails />,
         element: <BuyForm />,
       },
       {
@@ -99,12 +102,12 @@ const router = createBrowserRouter([
       },
       {
         path:"allusers",
-         loader: () => fetch("http://localhost:3000/users"),
+         loader: () => fetch("https://book-courier-two.vercel.app/users"),
         element:<AllUsers />,
       },
       {
         path: "addbook",
-        loader: () => fetch("http://localhost:3000/librarianbooks"),
+        loader: () => fetch("https://book-courier-two.vercel.app/librarianbooks"),
         element: <AddBooks />,
       },
       {
@@ -114,6 +117,10 @@ const router = createBrowserRouter([
       {
         path:"managebooks",
         element:<ManageBooks />, // You can create a separate ManageBooks component if needed
+      },
+      {
+        path: "librarianorder",
+        element: <LibrarianOrder />, // You can create a separate LibrarianOrder component if needed
       }
     ],
   },

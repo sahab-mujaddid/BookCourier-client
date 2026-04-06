@@ -20,7 +20,7 @@ const AddBooks = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:3000/librarianbooks", {
+      const res = await fetch("https://book-courier-two.vercel.app/librarianbooks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newBook),

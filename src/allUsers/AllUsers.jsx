@@ -5,7 +5,7 @@ const AllUsers = () => {
 
   // 🔹 Load all users
   useEffect(() => {
-    fetch("http://localhost:3000/users")
+    fetch("https://book-courier-two.vercel.app/users")
       .then((res) => res.json())
       .then((data) => setUsers(data))
       .catch((err) => console.error("Error fetching users:", err));
@@ -14,7 +14,7 @@ const AllUsers = () => {
   // 🔹 Update role
   const handleRoleChange = async (id, newRole) => {
     try {
-      const res = await fetch(`http://localhost:3000/users/${id}`, {
+      const res = await fetch(`https://book-courier-two.vercel.app/users/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ role: newRole }),
